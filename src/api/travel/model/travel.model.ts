@@ -25,7 +25,7 @@ export const TravelSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'driver',
   },
-  passenger: [
+  passengers: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'passenger',
