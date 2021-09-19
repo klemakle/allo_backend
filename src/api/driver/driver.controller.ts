@@ -1,15 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  Res,
+} from '@nestjs/common';
+import { Response, Request } from 'express';
+import { handleError } from 'src/utils/error';
 import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 
-@Controller('driver')
+@Controller('api/driver')
 export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 
-  @Post()
-  create(@Body() createDriverDto: CreateDriverDto) {
-    return this.driverService.create(createDriverDto);
+  @Post('/add')
+  async create(@Res() res: Response, @Body() createDriverDto: CreateDriverDto) {
+    try {
+      const driverCreated = await this.driverService.create(createDriverDto);
+      return res.status(HttpStatus.CREATED).json({
+        message: 'Compte créé avec succès !',
+        driver: driverCreated,
+      });
+    } catch (error) {
+      handleError(error, 'DRIVER.CONTROLLER.CREATE');
+      return res.status(error.status).json({ message: error.message });
+    }
   }
 
   @Get()
