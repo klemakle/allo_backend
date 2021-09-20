@@ -34,13 +34,29 @@ export class DriverController {
   }
 
   @Get()
-  findAll() {
-    return this.driverService.findAll();
+  async findAll(@Res() res: Response) {
+    try {
+      const allDrivers = await this.driverService.findAll();
+      return res.status(HttpStatus.OK).json({
+        drivers: allDrivers,
+      });
+    } catch (error) {
+      handleError(error, 'DRIVER.CONTROLLER.FINDALL');
+      return res.status(error.status).json({ message: error.message });
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.driverService.findOne(+id);
+  @Get('/:id')
+  async findOne(@Res() res: Response, @Param('id') id: string) {
+    try {
+      const driverFound = await this.driverService.findOne(id);
+      return res.status(HttpStatus.OK).json({
+        driver: driverFound,
+      });
+    } catch (error) {
+      handleError(error, 'DRIVER.CONTROLLER.FINDONE');
+      return res.status(error.status).json({ message: error.message });
+    }
   }
 
   @Patch(':id')

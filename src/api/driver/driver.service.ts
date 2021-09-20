@@ -34,12 +34,44 @@ export class DriverService {
     }
   }
 
-  findAll() {
-    return `This action returns all driver`;
+  async findAll(): Promise<any> {
+    try {
+      logger.info('------FIND-ALL.DRIVER ------- BEGIN');
+      const allDrivers = await this.driverModel.find();
+      if (!allDrivers) {
+        throw new HttpException(
+          'Aucun driver dans la base de données',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      logger.info('------FIND-ALL.DRIVER ------- SUCCESS');
+      return allDrivers;
+    } catch (err) {
+      handleError(err, 'DRIVER.SERVICE.FINDALL');
+      const errorMessage = err.message || 'Erreur interne du serveur';
+      const errorStatus = err.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      throw new HttpException(errorMessage, errorStatus);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} driver`;
+  async findOne(id: string): Promise<Driver> {
+    try {
+      logger.info('------FIND-ONE.DRIVER ------- BEGIN');
+      const driverFound = await this.driverModel.findOne({ _id: id });
+      if (!driverFound) {
+        throw new HttpException(
+          "Aucun compte n'est associé à cet id",
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      logger.info('------FIND-ONE.DRIVER ------- SUCCESS');
+      return driverFound;
+    } catch (err) {
+      handleError(err, 'DRIVER.SERVICE.FINDONE');
+      const errorMessage = err.message || 'Erreur interne du serveur';
+      const errorStatus = err.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      throw new HttpException(errorMessage, errorStatus);
+    }
   }
 
   update(id: number, updateDriverDto: UpdateDriverDto) {
