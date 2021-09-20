@@ -37,7 +37,9 @@ export class DriverService {
   async findAll(): Promise<any> {
     try {
       logger.info('------FIND-ALL.DRIVER ------- BEGIN');
-      const allDrivers = await this.driverModel.find();
+      const allDrivers = await this.driverModel
+        .find()
+        .select(' -created_at -updated_at -password -__v');
       if (!allDrivers) {
         throw new HttpException(
           'Aucun driver dans la base de données',
@@ -57,10 +59,12 @@ export class DriverService {
   async findOne(id: string): Promise<Driver> {
     try {
       logger.info('------FIND-ONE.DRIVER ------- BEGIN');
-      const driverFound = await this.driverModel.findOne({ _id: id });
+      const driverFound = await this.driverModel
+        .findById(id)
+        .select(' -created_at -updated_at -password -__v');
       if (!driverFound) {
         throw new HttpException(
-          "Aucun compte n'est associé à cet id",
+          "Aucun compte n'est associé à cet identifiant",
           HttpStatus.NOT_FOUND,
         );
       }
