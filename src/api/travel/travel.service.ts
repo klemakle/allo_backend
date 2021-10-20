@@ -95,7 +95,7 @@ export class TravelService {
 
   async findAll() {
     try {
-      const all_travels = await this.travelModel.find()
+      const all_travels = await this.travelModel.find();
       return all_travels;
     } catch (err) {
       handleError(err, 'TRAVEL.SERVICE.FIND-ALL');
