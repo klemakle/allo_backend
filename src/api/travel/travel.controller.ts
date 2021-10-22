@@ -45,7 +45,7 @@ export class TravelController {
     }
   }
 
-  @Get()
+  @Get('/search')
   async findByDestination(@Res() res: Response, @Req() req: Request) {
     try {
       const { destination, location } = req.body;
