@@ -16,13 +16,14 @@ export class TravelService {
     @InjectModel('Driver') private driverModel: Model<Driver>,
   ) {}
 
+  
   async create(createTravelDto: CreateTravelDto): Promise<Travel> {
     try {
       logger.info('------CREATE.TRAVEL ------- BEGIN');
-      const driver_who_want_creates_travel = await this.driverModel.findById(
+      const driver_who_want_create_travel = await this.driverModel.findById(
         createTravelDto.driver,
       );
-      if (!driver_who_want_creates_travel) {
+      if (!driver_who_want_create_travel) {
         throw new HttpException(
           "Il n'existe pas de driver avec cet id",
           HttpStatus.NOT_FOUND,
@@ -62,7 +63,6 @@ export class TravelService {
   async findByDestination(
     destination: string,
     location: string,
-    departureTime: Date,
   ): Promise<Travel[]> {
     logger.info('------FIND-BY.DESTINATION.TRAVEL ------- BEGIN');
     try {
@@ -73,7 +73,6 @@ export class TravelService {
             { completed: { $ne: true } },
             { destination: destination },
             { location: location },
-            { departureTime: departureTime },
           ],
         })
         .select('-__v -completed -isDeleted')
@@ -95,8 +94,16 @@ export class TravelService {
     }
   }
 
-  findAll() {
-    return `This action returns all travel`;
+  async findAll() {
+    try {
+      const all_travels = await this.travelModel.find();
+      return all_travels;
+    } catch (err) {
+      handleError(err, 'TRAVEL.SERVICE.FIND-ALL');
+      const errorMessage = err?.message || error_servor;
+      const errorStatus = err?.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      throw new HttpException(errorMessage, errorStatus);
+    }
   }
 
   update(id: number, updateTravelDto: UpdateTravelDto) {
