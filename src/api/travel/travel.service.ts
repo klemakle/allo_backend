@@ -16,7 +16,6 @@ export class TravelService {
     @InjectModel('Driver') private driverModel: Model<Driver>,
   ) {}
 
-  
   async create(createTravelDto: CreateTravelDto): Promise<Travel> {
     try {
       logger.info('------CREATE.TRAVEL ------- BEGIN');
