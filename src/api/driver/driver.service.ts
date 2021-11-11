@@ -28,13 +28,14 @@ export class DriverService {
       return await driver.save();
     } catch (err) {
       handleError(err, 'DRIVER.SERVICE.CREATE');
-      const errorMessage = err?.message || 'Erreur interne du serveur';
-      const errorStatus = err?.status || HttpStatus.INTERNAL_SERVER_ERROR;
-      throw new HttpException(errorMessage, errorStatus);
+      throw new HttpException(
+        err?.message || 'Erreur interne du serveur',
+        err?.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  async findAll(): Promise<any> {
+  async findAll(): Promise<Driver[]> {
     try {
       logger.info('------FIND-ALL.DRIVER ------- BEGIN');
       const allDrivers = await this.driverModel
@@ -50,9 +51,10 @@ export class DriverService {
       return allDrivers;
     } catch (err) {
       handleError(err, 'DRIVER.SERVICE.FINDALL');
-      const errorMessage = err?.message || 'Erreur interne du serveur';
-      const errorStatus = err?.status || HttpStatus.INTERNAL_SERVER_ERROR;
-      throw new HttpException(errorMessage, errorStatus);
+      throw new HttpException(
+        err?.message || 'Erreur interne du serveur',
+        err?.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -72,9 +74,10 @@ export class DriverService {
       return driverFound;
     } catch (err) {
       handleError(err, 'DRIVER.SERVICE.FINDONE');
-      const errorMessage = err?.message || 'Erreur interne du serveur';
-      const errorStatus = err?.status || HttpStatus.INTERNAL_SERVER_ERROR;
-      throw new HttpException(errorMessage, errorStatus);
+      throw new HttpException(
+        err?.message || 'Erreur interne du serveur',
+        err?.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

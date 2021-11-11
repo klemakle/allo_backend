@@ -14,6 +14,8 @@ export class CreateDriverDto {
   @MinLength(8)
   password: string;
 
+  hasAccess: boolean;
+
   @IsDate()
   readonly created_at: Date;
 
