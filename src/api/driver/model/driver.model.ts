@@ -21,6 +21,10 @@ export const DriverSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
+  hasAccess: {
+    type: Boolean,
+    default: true,
+  },
   created_at: {
     type: Date,
     default: Date,

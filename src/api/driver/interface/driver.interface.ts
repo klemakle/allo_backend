@@ -5,6 +5,7 @@ export interface Driver extends Document {
   lastname: string;
   phone: string;
   password: string;
+  hasAccess: string;
   readonly created_at: Date;
   readonly updated_at: Date;
 }
